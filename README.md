@@ -1,6 +1,6 @@
 # Multi-Level Compression Cross Networks (MLCC)
 
-Official MLCC implementation for the paper [**"Compress, Cross, and Scale: Multi-Level Compression Cross Networks for Efficient Scaling in Recommender Systems"**](https://arxiv.org/html/2602.12041v1).
+Official MLCC implementation for the paper [**"Compress, Cross, and Scale: Multi-Level Compression Cross Networks for Efficient Scaling in Recommender Systems"**](https://arxiv.org/abs/2602.12041).
 
 ## Model Performance Comparison
 
