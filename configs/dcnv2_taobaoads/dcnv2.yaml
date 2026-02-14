@@ -1,0 +1,40 @@
+model:
+  name: "dcnv2"       # 模型类型标识
+  embedding_dim: 16   # 类别特征嵌入维度
+  dropout: 0.2        # Dropout正则化概率
+  hash_size: 1000000  # 类别特征哈希空间大小
+  # DCNv2 specific parameters
+  cross_layers: 2                      # Cross层数量
+  cross_parameterization: "matrix"     # Cross层参数化方式: vector/matrix
+  deep_activation: "relu"              # Deep层激活函数
+  deep_hidden_dims: [128, 64]          # Deep层维度列表
+  mix_hidden_dims: [256, 128, 64, 32]  # Mix层维度列表
+
+# Dataset Configuration
+data:
+  dataset: "taobaoads"                              # 数据集类型
+  train_path: "data/raw/taobaoads/train_split.txt"  # 训练数据路径
+  val_path: "data/raw/taobaoads/val_split.txt"      # 验证数据路径
+  test_paths:                                       # 测试数据路径列表
+    - "data/raw/taobaoads/eval_split.txt"           # 评估集路径
+  batch_size: 2048                                  # 训练批处理大小
+  eval_batch_size: 4096                             # 评估批处理大小
+  use_sharding: true                                # 启用多进程分片数据加载
+  num_workers: 8                                    # 数据加载进程数
+
+# Training Configuration
+training:
+  epochs: 1                   # 训练轮数
+  learning_rate: 0.001        # 学习率
+  optimizer: "adam"           # 优化器类型
+  train_metric_interval: 500  # 训练过程中评估间隔步数
+
+# Output Configuration
+output:
+  model_dir: "outputs_taobaoads/checkpoints/dcnv2"  # 模型保存目录
+  log_dir: "outputs_taobaoads/logs/dcnv2"           # 日志保存目录
+  save_last: true                                   # 是否保存最新模型
+
+# Evaluation Configuration
+evaluation:
+  metrics: ["auc", "logloss"]  # 评估指标列表

@@ -1,0 +1,39 @@
+model:
+  name: "wukong"                   # 模型类型标识
+  embedding_dim: 16                # 特征嵌入维度
+  num_layers: 2                    # Wukong交互层数
+  num_emb_lcb: 16                  # 线性压缩块输出embedding数
+  num_emb_fmb: 16                  # 因子分解块输出embedding数
+  rank_fmb: 32                     # 因子分解块的秩
+  hidden_dims: [256, 128, 64, 32]  # 最终MLP隐藏层维度列表
+  dropout: 0.2                     # Dropout正则化概率
+  hash_size: 1000000               # 类别特征哈希空间大小
+
+# Dataset Configuration
+data:
+  dataset: "avazu"                              # 数据集类型
+  train_path: "data/raw/avazu/train_split.txt"  # 训练数据路径
+  val_path: "data/raw/avazu/val_split.txt"      # 验证数据路径
+  test_paths:                                   # 测试数据路径列表
+    - "data/raw/avazu/eval_split.txt"           # 评估集路径
+  batch_size: 2048                              # 训练批处理大小
+  eval_batch_size: 4096                         # 评估批处理大小
+  use_sharding: true                            # 启用多进程分片数据加载
+  num_workers: 8                                # 数据加载进程数
+
+# Training Configuration
+training:
+  epochs: 1                   # 训练轮数
+  learning_rate: 0.001        # 学习率
+  optimizer: "adam"           # 优化器类型
+  train_metric_interval: 500  # 训练过程中评估间隔步数
+
+# Output Configuration
+output:
+  model_dir: "outputs_avazu/checkpoints/wukong"  # 模型保存目录
+  log_dir: "outputs_avazu/logs/wukong"           # 日志保存目录
+  save_last: true                                # 是否保存最新模型
+
+# Evaluation Configuration
+evaluation:
+  metrics: ["auc", "logloss"]  # 评估指标列表

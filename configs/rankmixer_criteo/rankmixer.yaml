@@ -1,0 +1,40 @@
+model:
+  name: "rankmixer"                    # 模型类型标识
+  embedding_dim: 16                    # 特征嵌入维度
+  dim_multiplier: 2                    # Token维度乘数（T * dim_multiplier = output_dim）
+  num_layers: 2                        # RankMixer层数
+  num_heads: null                      # Token mixing头数，null表示使用num_features
+  use_add_norm: true                   # 是否使用Add & Norm
+  ffn_multiplier: 4                    # FFN隐藏层维度乘数
+  mix_hidden_dims: [256, 128, 64, 32]  # 最终MLP隐藏层维度列表
+  dropout: 0.2                         # Dropout正则化概率
+  hash_size: 1000000                   # 类别特征哈希空间大小
+
+# Dataset Configuration
+data:
+  dataset: "criteo"                              # 数据集类型
+  train_path: "data/raw/criteo/train_split.txt"  # 训练数据路径
+  val_path: "data/raw/criteo/val_split.txt"      # 验证数据路径
+  test_paths:                                    # 测试数据路径列表
+    - "data/raw/criteo/eval_split.txt"           # 评估集路径
+  batch_size: 2048                               # 训练批处理大小
+  eval_batch_size: 4096                          # 评估批处理大小
+  use_sharding: true                             # 启用多进程分片数据加载
+  num_workers: 8                                 # 数据加载进程数
+
+# Training Configuration
+training:
+  epochs: 1                   # 训练轮数
+  learning_rate: 0.001        # 学习率
+  optimizer: "adam"           # 优化器类型
+  train_metric_interval: 500  # 训练过程中评估间隔步数
+
+# Output Configuration
+output:
+  model_dir: "outputs_criteo/checkpoints/rankmixer"  # 模型保存目录
+  log_dir: "outputs_criteo/logs/rankmixer"           # 日志保存目录
+  save_last: true                                    # 是否保存最新模型
+
+# Evaluation Configuration
+evaluation:
+  metrics: ["auc", "logloss"]  # 评估指标列表

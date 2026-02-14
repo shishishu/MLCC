@@ -1,0 +1,43 @@
+model:
+  name: "mlcc"             # 模型类型标识
+  embedding_dim_total: 64  # 类别特征嵌入维度
+  embedding_dim_block: 16
+  dropout: 0.2             # Dropout正则化概率
+  hash_size: 1000000       # 类别特征哈希空间大小
+  # MLCC specific parameters
+  head_num: 4                           # 多头注意力数量
+  dmlp_dim_list: [4,1]                  # 动态MLP层维度列表 [8->1]
+  dmlp_dim_concat: [0,1]                # 拼接层索引列表 (e.g., [0, 1])
+  emb_size2: 8                          # 输出embedding维度 (defaults to embedding_dim)
+  num_inputs: 1                         # 输入embedding数量
+  emb_raw_dim: 8                        # Raw embedding维度 (when 0 in dmlp_dim_concat)
+  deep_hidden_dims: [256, 128, 64, 32]  # Deep MLP层维度列表
+
+# Dataset Configuration
+data:
+  dataset: "criteo"                              # 数据集类型
+  train_path: "data/raw/criteo/train_split.txt"  # 训练数据路径
+  val_path: "data/raw/criteo/val_split.txt"      # 验证数据路径
+  test_paths:                                    # 测试数据路径列表
+    - "data/raw/criteo/eval_split.txt"           # 评估集路径
+  batch_size: 2048                               # 训练批处理大小
+  eval_batch_size: 4096                          # 评估批处理大小
+  use_sharding: true                             # 启用多进程分片数据加载
+  num_workers: 8                                 # 数据加载进程数
+
+# Training Configuration
+training:
+  epochs: 1                   # 训练轮数
+  learning_rate: 0.001        # 学习率
+  optimizer: "adam"           # 优化器类型
+  train_metric_interval: 500  # 训练过程中评估间隔步数
+
+# Output Configuration
+output:
+  model_dir: "outputs_criteo/checkpoints/mc-mlcc-s4"  # 模型保存目录
+  log_dir: "outputs_criteo/logs/mc-mlcc-s4"           # 日志保存目录
+  save_last: true                                     # 是否保存最新模型
+
+# Evaluation Configuration
+evaluation:
+  metrics: ["auc", "logloss"]  # 评估指标列表

@@ -1,0 +1,9 @@
+data
+outputs
+__pycache__/
+*/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+mpi-log/
+.idea/
